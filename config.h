@@ -99,28 +99,33 @@ float alpha = 0.8;
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
 	/* 8 normal colors */
-	[0]  = "#414b50",				/* black */
-	[1]  = "#e67e80",				/* red */
-	[2]  = "#a7c080",				/* green */
-	[3]  = "#dbbc7f",				/* yellow */
-	[4]  = "#7fbbb3",				/* blue */
-	[5]  = "#d699b6",				/* magenta */
-	[6]  = "#83c092",				/* cyan */
-	[7]  = "#d3c6aa",				/* white */
+	[0]  = "#090618",				/* black */
+	[1]  = "#c34043",				/* red */
+	[2]  = "#76946a",				/* green */
+	[3]  = "#c0a36e",				/* yellow */
+	[4]  = "#7e9cd8",				/* blue */
+	[5]  = "#957fb8",				/* magenta */
+	[6]  = "#6a9589",				/* cyan */
+	[7]  = "#c8c093",				/* white */
 
 	/* 8 bright colors */
-	[8]  = "#475258",				/* black */
-	[9]  = "#e67e80",				/* red */
-	[10] = "#a7c080",				/* green */
-	[11] = "#dbbc7f",				/* yellow */
-	[12] = "#7fbbb3",				/* blue */
-	[13] = "#d699b6",				/* magenta */
-	[14] = "#83c092",				/* cyan */
-	[15] = "#d3c6aa",				/* white */
+	[8]  = "#727169",				/* black */
+	[9]  = "#e82424",				/* red */
+	[10] = "#98bb6c",				/* green */
+	[11] = "#e6c384",				/* yellow */
+	[12] = "#7fb4ca",				/* blue */
+	[13] = "#938aa9",				/* magenta */
+	[14] = "#7aa89f",				/* cyan */
+	[15] = "#dcd7ba",				/* white */
 
-	//[255] = 0,
+
+	[255] = 0,
 
 	/* more colors can be added after 255 to use with DefaultXX */
+	"#1f1f28",
+	"#2d4f67",
+
+
 	//"#cccccc",
 	//"#555555",
 	//"gray90", /* default foreground colour */
@@ -130,12 +135,19 @@ static const char *colorname[] = {
 
 /*
  * Default colors (colorname index)
- * foreground, background, cursor
+ * foreground, background, cursor, selection
  */
 unsigned int defaultfg = 15;
-unsigned int defaultbg = 0;
+unsigned int defaultbg = 256;
 unsigned int defaultcs = 15;
-static unsigned int defaultrcs = 0;
+static unsigned int defaultrcs = 15;
+unsigned int selectionbg = 257;
+unsigned int selectionfg = 7;
+/* If 0 use selectionfg as foreground in order to have a uniform foreground-color */
+/* Else if 1 keep original foreground-color of each cell => more colors :) */
+static int ignoreselfg = 1;
+
+
 
 /*
  * Default shape of cursor
@@ -203,12 +215,19 @@ static Shortcut shortcuts[] = {
 	{ TERMMOD,              XK_Home,        zoomreset,      {.f =  0} },
 	{ TERMMOD,              XK_C,           clipcopy,       {.i =  0} },
 	{ TERMMOD,              XK_V,           clippaste,      {.i =  0} },
+	{ MODKEY,               XK_c,           clipcopy,       {.i =  0} },
+	{ MODKEY,               XK_v,           clippaste,      {.i =  0} },
 	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
 	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
 	{ TERMMOD,              XK_Return,      newterm,        {.i =  0} },
 	{ ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -1} },
 	{ ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} },
+	{ MODKEY,               XK_k,           kscrollup,      {.i =  1} },
+	{ MODKEY,               XK_j,           kscrolldown,    {.i =  1} },
+	//{ MODKEY,               XK_a,           chgalpha,       {.f = -1} },
+	//{ MODKEY,               XK_s,           chgalpha,       {.f = +1} },
+	//{ MODKEY,               XK_d,           chgalpha,       {.f =  0} },
 };
 
 /*
