@@ -1,0 +1,6 @@
+.direnv/
+.envrc
+*.o
+*.orig
+*.rej
+dwm
