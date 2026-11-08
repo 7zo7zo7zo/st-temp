@@ -1,5 +1,5 @@
 {
-  description = "A flake for my personal fork of suckless's dwm";
+  description = "A flake for my personal fork of suckless's st";
 
   inputs.nixpkgs.url = "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.zst";
 
@@ -12,7 +12,7 @@
 
       overlays = [
         (final: prev: {
-          dwm = prev.dwm.overrideAttrs (old: {
+          st = prev.st.overrideAttrs (old: {
             src = ./.;
           });
         })
@@ -31,7 +31,7 @@
       packages = forAllSystems (
         system:
         {
-          default = nixpkgsFor.${system}.dwm;
+          default = nixpkgsFor.${system}.st;
         }
       );
 
@@ -50,7 +50,7 @@
               ];
 
               inputsFrom = [
-                pkgs.dwm
+                pkgs.st
               ];
             };
         }
